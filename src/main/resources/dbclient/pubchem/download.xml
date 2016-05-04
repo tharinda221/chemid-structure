@@ -1,0 +1,23 @@
+<PCT-Data>
+    <PCT-Data_input>
+        <PCT-InputData>
+            <PCT-InputData_download>
+                <PCT-Download>
+                    <PCT-Download_uids>
+                        <PCT-QueryUids>
+                            <PCT-QueryUids_entrez>
+                                <PCT-Entrez>
+                                    <PCT-Entrez_db>pccompound</PCT-Entrez_db>
+                                    <PCT-Entrez_query-key>1</PCT-Entrez_query-key>
+                                    <PCT-Entrez_webenv>NCID_1_1578505_130.14.18.34_9001_1462400221_135418579_0MetA0_S_MegaStore_F_1</PCT-Entrez_webenv>
+                                </PCT-Entrez>
+                            </PCT-QueryUids_entrez>
+                        </PCT-QueryUids>
+                    </PCT-Download_uids>
+                    <PCT-Download_format value="sdf"/>
+                    <PCT-Download_compression value="gzip"/>
+                </PCT-Download>
+            </PCT-InputData_download>
+        </PCT-InputData>
+    </PCT-Data_input>
+</PCT-Data>

@@ -9,19 +9,14 @@
  * CONDITIONS OF ANY KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations under the License.
  */
-
 package org.chemid.structure.dbclient.common;
 
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.WebResource;
+public class Constants {
 
-public class RestClient {
-
-    public WebResource getWebResource(String Url) {
-
-        Client client = Client.create();
-        WebResource webResource = client
-                .resource(Url);
-        return webResource;
+    public static class ChemSpiderConstants{
+        public static String TOKEN = "327be9cb-76c5-48cf-97df-9da48db88e85";
+        public static Integer CONNECTION_TIMEOUT = 180000;
+        public static Integer SO_TIME_OUT = 18000;
+        public static Integer THREAD_TIME_OUT = 1000;
     }
 }

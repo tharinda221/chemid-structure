@@ -70,7 +70,7 @@ public class PubChemClient {
             xmlPayload.getElementsByTagName(Constants.PubChemClient.PUBCHEM_PAYLOAD_WebEnv_NAME).
                     item(Constants.PubChemClient.ITEM_NUMBER).setTextContent(pubChemESearch.getWebEnv());
 
-            System.out.println(pubQuery(XmlParser.getStringFromDocument(xmlPayload)));
+            return pubQuery(XmlParser.getStringFromDocument(xmlPayload));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -101,7 +101,9 @@ public class PubChemClient {
                             getFirstChild().getNodeValue());
                 }
             }
-            return resp;
+
+            return XmlParser.StringToXML(resp).getElementsByTagName(Constants.PubChemClient.PUG_QUERY_SDF_DOWNLOAD_URL).
+                    item(Constants.PubChemClient.ITEM_NUMBER).getFirstChild().getNodeValue();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -137,6 +139,6 @@ public class PubChemClient {
     public static void main(String[] args) {
 
         PubChemClient pubChemClient = new PubChemClient();
-        pubChemClient.getDownloadURL();
+        System.out.println(pubChemClient.getDownloadURL());
     }
 }

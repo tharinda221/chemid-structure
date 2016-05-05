@@ -13,12 +13,12 @@ package org.chemid.structure.dbclient.common;
 
 public class Constants {
 
-    public static class ChemSpiderConstants{
+    public static class ChemSpiderConstants {
         public static String TOKEN = "327be9cb-76c5-48cf-97df-9da48db88e85";
         public static Integer CONNECTION_TIMEOUT = 180000;
         public static Integer SO_TIME_OUT = 18000;
         public static Integer THREAD_TIME_OUT = 1000;
-
+    }
 
     public static final class PubChemClient {
 

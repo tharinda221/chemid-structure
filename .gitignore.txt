@@ -29,4 +29,4 @@ sonar-pom.xml
 *~
 *.em
 *.log
-*.iml
+structure.iml

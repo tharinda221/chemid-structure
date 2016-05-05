@@ -12,32 +12,28 @@
 
 package org.chemid.structure.dbclient.pubchem;
 
-import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
 import org.chemid.structure.beans.pubChemESearch;
 import org.chemid.structure.dbclient.common.Constants;
+import org.chemid.structure.dbclient.common.RestClient;
 import org.chemid.structure.dbclient.common.XmlParser;
 import org.w3c.dom.Document;
 
-import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response.Status;
 
 public class PubChemClient {
 
     private pubChemESearch pubChemESearch;
+    private RestClient restClient;
 
-    public  pubChemESearch getPubChemESearchRequestParameters() {
+    public pubChemESearch getPubChemESearchRequestParameters() {
 
         try {
 
-            Client client = Client.create();
-            WebResource webResource = client
-                    .resource(Constants.PubChemClient.ESEARCH_URL);
-
-            ClientResponse response = webResource.accept(MediaType.APPLICATION_XML)
-                    .get(ClientResponse.class);
+            this.restClient = new RestClient();
+            ClientResponse response = restClient.getWebResource(Constants.PubChemClient.ESEARCH_URL).
+                    accept(MediaType.APPLICATION_XML).get(ClientResponse.class);
 
             if (response.getStatus() != Status.OK.getStatusCode()) {
                 throw new RuntimeException("Failed : HTTP error code : "
@@ -74,22 +70,63 @@ public class PubChemClient {
             xmlPayload.getElementsByTagName(Constants.PubChemClient.PUBCHEM_PAYLOAD_WebEnv_NAME).
                     item(Constants.PubChemClient.ITEM_NUMBER).setTextContent(pubChemESearch.getWebEnv());
 
-            Client client = Client.create();
-            WebResource webResource = client
-                    .resource(Constants.PubChemClient.REQUEST_URL);
+            System.out.println(pubQuery(XmlParser.getStringFromDocument(xmlPayload)));
 
-//            ClientResponse response = webResource.accept(MediaType.APPLICATION_XML)
-//                    .get(ClientResponse.class);
-            ClientResponse response = webResource.accept(MediaType.APPLICATION_XML)
-                    .type(MediaType.APPLICATION_XML).post(ClientResponse.class, XmlParser.getStringFromDocument(xmlPayload));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String pubQuery(String xmlPayload) {
+
+        try {
+            this.restClient = new RestClient();
+            ClientResponse response = restClient.getWebResource(Constants.PubChemClient.REQUEST_URL).
+                    accept(MediaType.APPLICATION_XML).type(MediaType.APPLICATION_XML).
+                    post(ClientResponse.class, xmlPayload);
 
             if (response.getStatus() != Status.OK.getStatusCode()) {
                 throw new RuntimeException("Failed : HTTP error code : "
                         + response.getStatus());
             }
             String resp = response.getEntity(String.class);
-            Document doc = XmlParser.StringToXML(resp);
-            System.out.println(resp);
+
+            while(resp.contains(Constants.PubChemClient.PUG_QUERY_QUEUED_STATUS_TAG_NAME) ||
+                    resp.contains(Constants.PubChemClient.PUG_QUERY_RUNNING_STATUS_TAG_NAME)) {
+                Thread.sleep(1000);
+                if(resp.contains(Constants.PubChemClient.CHECK_QUERY_WAITING_REQUEST_ID_TAG)) {
+                    resp = checkQuery(XmlParser.StringToXML(resp).getElementsByTagName(Constants.PubChemClient.
+                            CHECK_QUERY_WAITING_REQUEST_ID_TAG_NAME).item(Constants.PubChemClient.ITEM_NUMBER).
+                            getFirstChild().getNodeValue());
+                }
+            }
+            return resp;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String checkQuery(String requestID) {
+
+        try {
+            Document xmlPayload = XmlParser.getXMLPayload(Constants.PubChemClient.CHECK_QUERY_FILE_NAME,
+                    Constants.PubChemClient.PUBCHEM_RESOURCES);
+            xmlPayload.getElementsByTagName(Constants.PubChemClient.CHECK_QUERY_REQUEST_ID_TAG_NAME).
+                    item(Constants.PubChemClient.ITEM_NUMBER).setTextContent(requestID);
+            this.restClient = new RestClient();
+            ClientResponse response = restClient.getWebResource(Constants.PubChemClient.REQUEST_URL).
+                    accept(MediaType.APPLICATION_XML).type(MediaType.APPLICATION_XML).
+                    post(ClientResponse.class, XmlParser.getStringFromDocument(xmlPayload));
+
+            if (response.getStatus() != Status.OK.getStatusCode()) {
+                throw new RuntimeException("Failed : HTTP error code : "
+                        + response.getStatus());
+            }
+            String resp = response.getEntity(String.class);
+            return resp;
 
         } catch (Exception e) {
             e.printStackTrace();

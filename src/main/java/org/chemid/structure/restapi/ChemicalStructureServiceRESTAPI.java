@@ -12,17 +12,15 @@
 
 package org.chemid.structure.restapi;
 
+import org.chemid.structure.common.Constants;
 import org.chemid.structure.common.MoleculeMassMapper;
 import org.chemid.structure.dbclient.chemspider.ChemSpiderClient;
-import org.chemid.structure.common.Constants;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 
 /**

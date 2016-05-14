@@ -12,11 +12,18 @@
 
 package org.chemid.structure.restapi;
 
+import org.chemid.structure.common.MoleculeMassMapper;
+import org.chemid.structure.dbclient.chemspider.ChemSpiderClient;
+import org.chemid.structure.common.Constants;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 /**
  * This class includes RESTful API methods for chemical structure service.
@@ -36,16 +43,42 @@ public class ChemicalStructureServiceRESTAPI {
     }
 
     @GET
-    @Path("{database}/{adduct}/{mass}/{error}/{ppm}/{format}")
+    @Path("{database}/{charge}/{adduct}/{mass}/{error}/{ppm}/{format}")
     @Produces(MediaType.TEXT_PLAIN)
     public String download(@PathParam("database") String database,
+                           @PathParam("charge") String charge,
                            @PathParam("adduct") String adduct,
                            @PathParam("mass") Double mass,
                            @PathParam("error") Double error,
                            @PathParam("ppm") String ppm,
-                           @PathParam("format") String format) {
+                           @PathParam("format") String format) throws IOException {
 
-        return database + " " + adduct + " " + mass + " " + error + " " + ppm + " " + format;
+        if (charge.toLowerCase().equals("p")) {
+            mass = mass - MoleculeMassMapper.getInstance().getProperty("P." + adduct);
+        } else if (charge.toLowerCase().equals("n")) {
+            mass = mass + MoleculeMassMapper.getInstance().getProperty("N." + adduct);
+        } else {
 
+        }
+
+        if (database.toLowerCase().contains("pubchem")) {
+//            return String.valueOf(mass);
+        } else if (database.toLowerCase().contains("chemspider")) {
+            ChemSpiderClient client = ChemSpiderClient.getInstance(Constants.ChemSpiderConstants.TOKEN, true);
+            client.getChemspiderByMass(mass, error);
+            File file = new File("structures.sdf");
+            FileInputStream stream = new FileInputStream(file);
+            StringBuilder stringBuilder = new StringBuilder("");
+            int ch;
+            while ((ch = stream.read()) != -1) {
+                stringBuilder.append((char) ch);
+            }
+            stream.close();
+            return stringBuilder.toString();
+        } else {
+            return "ERROR: Something is Wrong. Please check the values.";
+        }
+
+        return "ERROR: Something is Wrong. Please check the values.";
     }
 }

@@ -16,10 +16,10 @@ import javax.ws.rs.client.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.chemid.structure.beans.pubChemESearch;
-import org.chemid.structure.dbclient.common.Constants;
-import org.chemid.structure.dbclient.common.RestClient;
-import org.chemid.structure.dbclient.common.XmlParser;
+import org.chemid.structure.dbclient.pubchem.beans.pubChemESearch;
+import org.chemid.structure.common.Constants;
+import org.chemid.structure.common.RestClient;
+import org.chemid.structure.common.XmlParser;
 import org.glassfish.jersey.client.ClientConfig;
 import org.w3c.dom.Document;
 

@@ -37,6 +37,7 @@ public class Constants {
         public static final String CHECK_QUERY_WAITING_REQUEST_ID_TAG_NAME = "PCT-Waiting_reqid";
         public static final String PUG_QUERY_QUEUED_STATUS_TAG_NAME = "<PCT-Status value=\"queued\"/>";
         public static final String PUG_QUERY_RUNNING_STATUS_TAG_NAME = "<PCT-Status value=\"running\"/>";
+        public static final String PUG_QUERY_SDF_DOWNLOAD_URL = "PCT-Download-URL_url";
 
     }
 }

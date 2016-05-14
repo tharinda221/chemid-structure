@@ -12,16 +12,19 @@
 
 package org.chemid.structure.dbclient.common;
 
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.WebResource;
+
+import org.glassfish.jersey.client.ClientConfig;
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
 
 public class RestClient {
 
-    public WebResource getWebResource(String Url) {
+    public WebTarget getWebResource(String Url) {
 
-        Client client = Client.create();
-        WebResource webResource = client
-                .resource(Url);
-        return webResource;
+        ClientConfig config = new ClientConfig();
+        Client client = ClientBuilder.newClient(config);
+        return client.target(Url);
     }
 }

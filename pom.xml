@@ -72,13 +72,10 @@
             <artifactId>axis2-transport-http</artifactId>
             <version>${axis2.version}</version>
         </dependency>
-        <!--Chemspider api-->
         <dependency>
-            <groupId>com.chemspider.www</groupId>
-            <artifactId>chemspider</artifactId>
-            <version>${chemspider.version}</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/lib/chemspider_webservices.jar</systemPath>
+            <groupId>org.apache.axis2</groupId>
+            <artifactId>axis2-transport-local</artifactId>
+            <version>1.7.1</version>
         </dependency>
 
         <dependency>

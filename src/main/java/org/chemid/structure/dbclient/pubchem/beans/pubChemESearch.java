@@ -10,7 +10,7 @@
  * specific language governing permissions and limitations under the License.
  */
 
-package org.chemid.structure.beans;
+package org.chemid.structure.dbclient.pubchem.beans;
 
 
 public class pubChemESearch {

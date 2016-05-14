@@ -18,9 +18,10 @@ import com.chemspider.www.SearchStub.AsyncSimpleSearch;
 import com.chemspider.www.SearchStub.GetAsyncSearchResultResponse;
 import com.chemspider.www.SearchStub.GetAsyncSearchStatusResponse;
 
+import org.apache.axis2.AxisFault;
 import org.apache.axis2.transaction.TransactionConfiguration;
 import org.apache.axis2.transport.http.HTTPConstants;
-import org.chemid.structure.dbclient.common.Constants;
+import org.chemid.structure.common.Constants;
 import org.openscience.cdk.ChemFile;
 import org.openscience.cdk.ChemObject;
 import org.openscience.cdk.exception.CDKException;
@@ -46,10 +47,20 @@ public class ChemSpiderClient {
     protected boolean verbose;
     private Integer CONNECTION_TIMEOUT = Constants.ChemSpiderConstants.CONNECTION_TIMEOUT;
     private Integer SO_TIME_OUT = Constants.ChemSpiderConstants.SO_TIME_OUT;
+    private static ChemSpiderClient client;
+    private String sdfString = null;
 
-    public ChemSpiderClient(String token, boolean verbose) {
+    private ChemSpiderClient(String token, boolean verbose) {
         this.token = token;
         this.verbose = verbose;
+    }
+
+    public static ChemSpiderClient getInstance(String token, boolean verbose){
+        if (client == null) {
+            client = new ChemSpiderClient(token, verbose);
+            return client;
+        }
+        return client;
     }
 
     public static String get_Search_GetAsyncSearchStatus_Results(String rid, String token) {
@@ -64,7 +75,10 @@ public class ChemSpiderClient {
             final GetAsyncSearchStatusResponse thisGetAsyncSearchStatusResponse =
                     thisSearchStub.getAsyncSearchStatus(GetAsyncSearchStatusInput);
             Output = thisGetAsyncSearchStatusResponse.getGetAsyncSearchStatusResult().toString();
-        } catch (Exception e) {
+        } catch (AxisFault axisFault) {
+            axisFault.printStackTrace();
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
         return Output;
     }
@@ -86,12 +100,12 @@ public class ChemSpiderClient {
         thisSearchStub._getServiceClient().getOptions().setProperty(HTTPConstants.CHUNKED, false);
         thisSearchStub._getServiceClient().getOptions().setProperty(HTTPConstants.CONNECTION_TIMEOUT, CONNECTION_TIMEOUT);
         thisSearchStub._getServiceClient().getOptions().setProperty(HTTPConstants.SO_TIMEOUT, SO_TIME_OUT);
-        SearchStub.GetAsyncSearchResult GetAsyncSearchResultInput =
-                new SearchStub.GetAsyncSearchResult();
+        SearchStub.GetAsyncSearchResult GetAsyncSearchResultInput = new SearchStub.GetAsyncSearchResult();
 
         GetAsyncSearchResultInput.setRid(sbmar.getSearchByMassAsyncResult());
         GetAsyncSearchResultInput.setToken(token);
-        GetAsyncSearchResultResponse thisGetAsyncSearchResultResponse = thisSearchStub.getAsyncSearchResult(GetAsyncSearchResultInput);
+        GetAsyncSearchResultResponse thisGetAsyncSearchResultResponse =
+                thisSearchStub.getAsyncSearchResult(GetAsyncSearchResultInput);
         int[] Output = thisGetAsyncSearchResultResponse.getGetAsyncSearchResultResult().get_int();
 
         Vector<String> csids = getChemSpiderByCsids(Output);
@@ -193,6 +207,7 @@ public class ChemSpiderClient {
                 ChemFile files = reader1.read(new ChemFile());
                 List<IAtomContainer> objs = ChemFileManipulator.getAllAtomContainers(files);
                 for (IChemObject o : objs) {
+                    sdfString = sdfString + o.toString();
                     wr.write(o);
                 }
                 wr.close();
@@ -200,8 +215,6 @@ public class ChemSpiderClient {
                 e.printStackTrace();
             } catch (CDKException e) {
                 e.printStackTrace();
-            } catch (Exception e) {
-                System.err.println("Problem retrieving ChemSpider webservices");
             }
         }
         return csids;
@@ -239,5 +252,9 @@ public class ChemSpiderClient {
     public String getCandidateID(String index) {
         int intIndex = Integer.parseInt(index);
         return (String) this.candidates[intIndex].getProperty("CSID");
+    }
+
+    public String getSdfString() {
+        return sdfString;
     }
 }

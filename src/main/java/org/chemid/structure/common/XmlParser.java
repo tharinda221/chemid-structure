@@ -9,7 +9,7 @@
  * CONDITIONS OF ANY KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package org.chemid.structure.dbclient.common;
+package org.chemid.structure.common;
 
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;

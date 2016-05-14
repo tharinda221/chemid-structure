@@ -70,7 +70,7 @@
         <dependency>
             <groupId>com.chemspider.www</groupId>
             <artifactId>chemspider</artifactId>
-            <version>1.0</version>
+            <version>${chemspider.version}</version>
             <scope>system</scope>
             <systemPath>${basedir}/lib/chemspider_webservices.jar</systemPath>
         </dependency>
@@ -155,5 +155,6 @@
         <jersey.client.version>1.19.1</jersey.client.version>
         <cdk.version>1.5.13</cdk.version>
         <axis2.version>1.7.1</axis2.version>
+        <chemspider.version>1.0</chemspider.version>
     </properties>
 </project>

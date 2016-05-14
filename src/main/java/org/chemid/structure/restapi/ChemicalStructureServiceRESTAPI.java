@@ -14,6 +14,7 @@ package org.chemid.structure.restapi;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -32,5 +33,19 @@ public class ChemicalStructureServiceRESTAPI {
     @Produces(MediaType.TEXT_PLAIN)
     public String version() {
         return "Chemical Structure Service V 1.0";
+    }
+
+    @GET
+    @Path("{database}/{adduct}/{mass}/{error}/{ppm}/{format}")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String download(@PathParam("database") String database,
+                           @PathParam("adduct") String adduct,
+                           @PathParam("mass") Double mass,
+                           @PathParam("error") Double error,
+                           @PathParam("ppm") String ppm,
+                           @PathParam("format") String format) {
+
+        return database + " " + adduct + " " + mass + " " + error + " " + ppm + " " + format;
+
     }
 }

@@ -1,3 +1,15 @@
+/*
+ * Copyright (c) 2016, ChemID. (http://www.chemid.org)
+ *
+ * ChemID licenses this file to you under the Apache License V 2.0.
+ * You may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+ * Unless required by applicable law or agreed to in writing, software distributed under the
+ * License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+ * CONDITIONS OF ANY KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations under the License.
+ */
+
 
 /**
  * SpectraStub.java
@@ -5,7 +17,7 @@
  * This file was auto-generated from WSDL
  * by the Apache Axis2 version: 1.6.1  Built on : Aug 31, 2011 (12:22:40 CEST)
  */
-        package com.chemspider.www;
+        package org.chemid.structure.dbclient.chemspider.generated;
 
         
 
@@ -175,9 +187,9 @@
 
                     
 
-                            public  com.chemspider.www.SpectraStub.GetSpectraInfoArrayResponse getSpectraInfoArray(
+                            public  SpectraStub.GetSpectraInfoArrayResponse getSpectraInfoArray(
 
-                            com.chemspider.www.SpectraStub.GetSpectraInfoArray getSpectraInfoArray)
+                            SpectraStub.GetSpectraInfoArray getSpectraInfoArray)
                         
 
                     throws java.rmi.RemoteException
@@ -228,11 +240,11 @@
                 
                                 java.lang.Object object = fromOM(
                                              _returnEnv.getBody().getFirstElement() ,
-                                             com.chemspider.www.SpectraStub.GetSpectraInfoArrayResponse.class,
+                                             SpectraStub.GetSpectraInfoArrayResponse.class,
                                               getEnvelopeNamespaces(_returnEnv));
 
                                
-                                        return (com.chemspider.www.SpectraStub.GetSpectraInfoArrayResponse)object;
+                                        return (SpectraStub.GetSpectraInfoArrayResponse)object;
                                    
          }catch(org.apache.axis2.AxisFault f){
 
@@ -296,9 +308,9 @@
 
                     
 
-                            public  com.chemspider.www.SpectraStub.GetAllSpectraInfoResponse getAllSpectraInfo(
+                            public  SpectraStub.GetAllSpectraInfoResponse getAllSpectraInfo(
 
-                            com.chemspider.www.SpectraStub.GetAllSpectraInfo getAllSpectraInfo)
+                            SpectraStub.GetAllSpectraInfo getAllSpectraInfo)
                         
 
                     throws java.rmi.RemoteException
@@ -349,11 +361,11 @@
                 
                                 java.lang.Object object = fromOM(
                                              _returnEnv.getBody().getFirstElement() ,
-                                             com.chemspider.www.SpectraStub.GetAllSpectraInfoResponse.class,
+                                             SpectraStub.GetAllSpectraInfoResponse.class,
                                               getEnvelopeNamespaces(_returnEnv));
 
                                
-                                        return (com.chemspider.www.SpectraStub.GetAllSpectraInfoResponse)object;
+                                        return (SpectraStub.GetAllSpectraInfoResponse)object;
                                    
          }catch(org.apache.axis2.AxisFault f){
 
@@ -417,9 +429,9 @@
 
                     
 
-                            public  com.chemspider.www.SpectraStub.GetCompoundSpectraInfoResponse getCompoundSpectraInfo(
+                            public  SpectraStub.GetCompoundSpectraInfoResponse getCompoundSpectraInfo(
 
-                            com.chemspider.www.SpectraStub.GetCompoundSpectraInfo getCompoundSpectraInfo)
+                            SpectraStub.GetCompoundSpectraInfo getCompoundSpectraInfo)
                         
 
                     throws java.rmi.RemoteException
@@ -470,11 +482,11 @@
                 
                                 java.lang.Object object = fromOM(
                                              _returnEnv.getBody().getFirstElement() ,
-                                             com.chemspider.www.SpectraStub.GetCompoundSpectraInfoResponse.class,
+                                             SpectraStub.GetCompoundSpectraInfoResponse.class,
                                               getEnvelopeNamespaces(_returnEnv));
 
                                
-                                        return (com.chemspider.www.SpectraStub.GetCompoundSpectraInfoResponse)object;
+                                        return (SpectraStub.GetCompoundSpectraInfoResponse)object;
                                    
          }catch(org.apache.axis2.AxisFault f){
 
@@ -538,9 +550,9 @@
 
                     
 
-                            public  com.chemspider.www.SpectraStub.GetSpectrumInfoResponse getSpectrumInfo(
+                            public  SpectraStub.GetSpectrumInfoResponse getSpectrumInfo(
 
-                            com.chemspider.www.SpectraStub.GetSpectrumInfo getSpectrumInfo)
+                            SpectraStub.GetSpectrumInfo getSpectrumInfo)
                         
 
                     throws java.rmi.RemoteException
@@ -591,11 +603,11 @@
                 
                                 java.lang.Object object = fromOM(
                                              _returnEnv.getBody().getFirstElement() ,
-                                             com.chemspider.www.SpectraStub.GetSpectrumInfoResponse.class,
+                                             SpectraStub.GetSpectrumInfoResponse.class,
                                               getEnvelopeNamespaces(_returnEnv));
 
                                
-                                        return (com.chemspider.www.SpectraStub.GetSpectrumInfoResponse)object;
+                                        return (SpectraStub.GetSpectrumInfoResponse)object;
                                    
          }catch(org.apache.axis2.AxisFault f){
 
@@ -7085,12 +7097,12 @@
         }
            
     
-            private  org.apache.axiom.om.OMElement  toOM(com.chemspider.www.SpectraStub.GetSpectraInfoArray param, boolean optimizeContent)
+            private  org.apache.axiom.om.OMElement  toOM(SpectraStub.GetSpectraInfoArray param, boolean optimizeContent)
             throws org.apache.axis2.AxisFault {
 
             
                         try{
-                             return param.getOMElement(com.chemspider.www.SpectraStub.GetSpectraInfoArray.MY_QNAME,
+                             return param.getOMElement(SpectraStub.GetSpectraInfoArray.MY_QNAME,
                                           org.apache.axiom.om.OMAbstractFactory.getOMFactory());
                         } catch(org.apache.axis2.databinding.ADBException e){
                             throw org.apache.axis2.AxisFault.makeFault(e);
@@ -7099,12 +7111,12 @@
 
             }
         
-            private  org.apache.axiom.om.OMElement  toOM(com.chemspider.www.SpectraStub.GetSpectraInfoArrayResponse param, boolean optimizeContent)
+            private  org.apache.axiom.om.OMElement  toOM(SpectraStub.GetSpectraInfoArrayResponse param, boolean optimizeContent)
             throws org.apache.axis2.AxisFault {
 
             
                         try{
-                             return param.getOMElement(com.chemspider.www.SpectraStub.GetSpectraInfoArrayResponse.MY_QNAME,
+                             return param.getOMElement(SpectraStub.GetSpectraInfoArrayResponse.MY_QNAME,
                                           org.apache.axiom.om.OMAbstractFactory.getOMFactory());
                         } catch(org.apache.axis2.databinding.ADBException e){
                             throw org.apache.axis2.AxisFault.makeFault(e);
@@ -7113,12 +7125,12 @@
 
             }
         
-            private  org.apache.axiom.om.OMElement  toOM(com.chemspider.www.SpectraStub.GetAllSpectraInfo param, boolean optimizeContent)
+            private  org.apache.axiom.om.OMElement  toOM(SpectraStub.GetAllSpectraInfo param, boolean optimizeContent)
             throws org.apache.axis2.AxisFault {
 
             
                         try{
-                             return param.getOMElement(com.chemspider.www.SpectraStub.GetAllSpectraInfo.MY_QNAME,
+                             return param.getOMElement(SpectraStub.GetAllSpectraInfo.MY_QNAME,
                                           org.apache.axiom.om.OMAbstractFactory.getOMFactory());
                         } catch(org.apache.axis2.databinding.ADBException e){
                             throw org.apache.axis2.AxisFault.makeFault(e);
@@ -7127,12 +7139,12 @@
 
             }
         
-            private  org.apache.axiom.om.OMElement  toOM(com.chemspider.www.SpectraStub.GetAllSpectraInfoResponse param, boolean optimizeContent)
+            private  org.apache.axiom.om.OMElement  toOM(SpectraStub.GetAllSpectraInfoResponse param, boolean optimizeContent)
             throws org.apache.axis2.AxisFault {
 
             
                         try{
-                             return param.getOMElement(com.chemspider.www.SpectraStub.GetAllSpectraInfoResponse.MY_QNAME,
+                             return param.getOMElement(SpectraStub.GetAllSpectraInfoResponse.MY_QNAME,
                                           org.apache.axiom.om.OMAbstractFactory.getOMFactory());
                         } catch(org.apache.axis2.databinding.ADBException e){
                             throw org.apache.axis2.AxisFault.makeFault(e);
@@ -7141,12 +7153,12 @@
 
             }
         
-            private  org.apache.axiom.om.OMElement  toOM(com.chemspider.www.SpectraStub.GetCompoundSpectraInfo param, boolean optimizeContent)
+            private  org.apache.axiom.om.OMElement  toOM(SpectraStub.GetCompoundSpectraInfo param, boolean optimizeContent)
             throws org.apache.axis2.AxisFault {
 
             
                         try{
-                             return param.getOMElement(com.chemspider.www.SpectraStub.GetCompoundSpectraInfo.MY_QNAME,
+                             return param.getOMElement(SpectraStub.GetCompoundSpectraInfo.MY_QNAME,
                                           org.apache.axiom.om.OMAbstractFactory.getOMFactory());
                         } catch(org.apache.axis2.databinding.ADBException e){
                             throw org.apache.axis2.AxisFault.makeFault(e);
@@ -7155,12 +7167,12 @@
 
             }
         
-            private  org.apache.axiom.om.OMElement  toOM(com.chemspider.www.SpectraStub.GetCompoundSpectraInfoResponse param, boolean optimizeContent)
+            private  org.apache.axiom.om.OMElement  toOM(SpectraStub.GetCompoundSpectraInfoResponse param, boolean optimizeContent)
             throws org.apache.axis2.AxisFault {
 
             
                         try{
-                             return param.getOMElement(com.chemspider.www.SpectraStub.GetCompoundSpectraInfoResponse.MY_QNAME,
+                             return param.getOMElement(SpectraStub.GetCompoundSpectraInfoResponse.MY_QNAME,
                                           org.apache.axiom.om.OMAbstractFactory.getOMFactory());
                         } catch(org.apache.axis2.databinding.ADBException e){
                             throw org.apache.axis2.AxisFault.makeFault(e);
@@ -7169,12 +7181,12 @@
 
             }
         
-            private  org.apache.axiom.om.OMElement  toOM(com.chemspider.www.SpectraStub.GetSpectrumInfo param, boolean optimizeContent)
+            private  org.apache.axiom.om.OMElement  toOM(SpectraStub.GetSpectrumInfo param, boolean optimizeContent)
             throws org.apache.axis2.AxisFault {
 
             
                         try{
-                             return param.getOMElement(com.chemspider.www.SpectraStub.GetSpectrumInfo.MY_QNAME,
+                             return param.getOMElement(SpectraStub.GetSpectrumInfo.MY_QNAME,
                                           org.apache.axiom.om.OMAbstractFactory.getOMFactory());
                         } catch(org.apache.axis2.databinding.ADBException e){
                             throw org.apache.axis2.AxisFault.makeFault(e);
@@ -7183,12 +7195,12 @@
 
             }
         
-            private  org.apache.axiom.om.OMElement  toOM(com.chemspider.www.SpectraStub.GetSpectrumInfoResponse param, boolean optimizeContent)
+            private  org.apache.axiom.om.OMElement  toOM(SpectraStub.GetSpectrumInfoResponse param, boolean optimizeContent)
             throws org.apache.axis2.AxisFault {
 
             
                         try{
-                             return param.getOMElement(com.chemspider.www.SpectraStub.GetSpectrumInfoResponse.MY_QNAME,
+                             return param.getOMElement(SpectraStub.GetSpectrumInfoResponse.MY_QNAME,
                                           org.apache.axiom.om.OMAbstractFactory.getOMFactory());
                         } catch(org.apache.axis2.databinding.ADBException e){
                             throw org.apache.axis2.AxisFault.makeFault(e);
@@ -7198,14 +7210,14 @@
             }
         
                                     
-                                        private  org.apache.axiom.soap.SOAPEnvelope toEnvelope(org.apache.axiom.soap.SOAPFactory factory, com.chemspider.www.SpectraStub.GetSpectraInfoArray param, boolean optimizeContent, javax.xml.namespace.QName methodQName)
+                                        private  org.apache.axiom.soap.SOAPEnvelope toEnvelope(org.apache.axiom.soap.SOAPFactory factory, SpectraStub.GetSpectraInfoArray param, boolean optimizeContent, javax.xml.namespace.QName methodQName)
                                         throws org.apache.axis2.AxisFault{
 
                                              
                                                     try{
 
                                                             org.apache.axiom.soap.SOAPEnvelope emptyEnvelope = factory.getDefaultEnvelope();
-                                                            emptyEnvelope.getBody().addChild(param.getOMElement(com.chemspider.www.SpectraStub.GetSpectraInfoArray.MY_QNAME,factory));
+                                                            emptyEnvelope.getBody().addChild(param.getOMElement(SpectraStub.GetSpectraInfoArray.MY_QNAME,factory));
                                                             return emptyEnvelope;
                                                         } catch(org.apache.axis2.databinding.ADBException e){
                                                             throw org.apache.axis2.AxisFault.makeFault(e);
@@ -7219,14 +7231,14 @@
 
                              
                                     
-                                        private  org.apache.axiom.soap.SOAPEnvelope toEnvelope(org.apache.axiom.soap.SOAPFactory factory, com.chemspider.www.SpectraStub.GetAllSpectraInfo param, boolean optimizeContent, javax.xml.namespace.QName methodQName)
+                                        private  org.apache.axiom.soap.SOAPEnvelope toEnvelope(org.apache.axiom.soap.SOAPFactory factory, SpectraStub.GetAllSpectraInfo param, boolean optimizeContent, javax.xml.namespace.QName methodQName)
                                         throws org.apache.axis2.AxisFault{
 
                                              
                                                     try{
 
                                                             org.apache.axiom.soap.SOAPEnvelope emptyEnvelope = factory.getDefaultEnvelope();
-                                                            emptyEnvelope.getBody().addChild(param.getOMElement(com.chemspider.www.SpectraStub.GetAllSpectraInfo.MY_QNAME,factory));
+                                                            emptyEnvelope.getBody().addChild(param.getOMElement(SpectraStub.GetAllSpectraInfo.MY_QNAME,factory));
                                                             return emptyEnvelope;
                                                         } catch(org.apache.axis2.databinding.ADBException e){
                                                             throw org.apache.axis2.AxisFault.makeFault(e);
@@ -7240,14 +7252,14 @@
 
                              
                                     
-                                        private  org.apache.axiom.soap.SOAPEnvelope toEnvelope(org.apache.axiom.soap.SOAPFactory factory, com.chemspider.www.SpectraStub.GetCompoundSpectraInfo param, boolean optimizeContent, javax.xml.namespace.QName methodQName)
+                                        private  org.apache.axiom.soap.SOAPEnvelope toEnvelope(org.apache.axiom.soap.SOAPFactory factory, SpectraStub.GetCompoundSpectraInfo param, boolean optimizeContent, javax.xml.namespace.QName methodQName)
                                         throws org.apache.axis2.AxisFault{
 
                                              
                                                     try{
 
                                                             org.apache.axiom.soap.SOAPEnvelope emptyEnvelope = factory.getDefaultEnvelope();
-                                                            emptyEnvelope.getBody().addChild(param.getOMElement(com.chemspider.www.SpectraStub.GetCompoundSpectraInfo.MY_QNAME,factory));
+                                                            emptyEnvelope.getBody().addChild(param.getOMElement(SpectraStub.GetCompoundSpectraInfo.MY_QNAME,factory));
                                                             return emptyEnvelope;
                                                         } catch(org.apache.axis2.databinding.ADBException e){
                                                             throw org.apache.axis2.AxisFault.makeFault(e);
@@ -7261,14 +7273,14 @@
 
                              
                                     
-                                        private  org.apache.axiom.soap.SOAPEnvelope toEnvelope(org.apache.axiom.soap.SOAPFactory factory, com.chemspider.www.SpectraStub.GetSpectrumInfo param, boolean optimizeContent, javax.xml.namespace.QName methodQName)
+                                        private  org.apache.axiom.soap.SOAPEnvelope toEnvelope(org.apache.axiom.soap.SOAPFactory factory, SpectraStub.GetSpectrumInfo param, boolean optimizeContent, javax.xml.namespace.QName methodQName)
                                         throws org.apache.axis2.AxisFault{
 
                                              
                                                     try{
 
                                                             org.apache.axiom.soap.SOAPEnvelope emptyEnvelope = factory.getDefaultEnvelope();
-                                                            emptyEnvelope.getBody().addChild(param.getOMElement(com.chemspider.www.SpectraStub.GetSpectrumInfo.MY_QNAME,factory));
+                                                            emptyEnvelope.getBody().addChild(param.getOMElement(SpectraStub.GetSpectrumInfo.MY_QNAME,factory));
                                                             return emptyEnvelope;
                                                         } catch(org.apache.axis2.databinding.ADBException e){
                                                             throw org.apache.axis2.AxisFault.makeFault(e);
@@ -7298,58 +7310,58 @@
 
         try {
         
-                if (com.chemspider.www.SpectraStub.GetSpectraInfoArray.class.equals(type)){
+                if (SpectraStub.GetSpectraInfoArray.class.equals(type)){
                 
-                           return com.chemspider.www.SpectraStub.GetSpectraInfoArray.Factory.parse(param.getXMLStreamReaderWithoutCaching());
+                           return SpectraStub.GetSpectraInfoArray.Factory.parse(param.getXMLStreamReaderWithoutCaching());
                     
 
                 }
            
-                if (com.chemspider.www.SpectraStub.GetSpectraInfoArrayResponse.class.equals(type)){
+                if (SpectraStub.GetSpectraInfoArrayResponse.class.equals(type)){
                 
-                           return com.chemspider.www.SpectraStub.GetSpectraInfoArrayResponse.Factory.parse(param.getXMLStreamReaderWithoutCaching());
+                           return SpectraStub.GetSpectraInfoArrayResponse.Factory.parse(param.getXMLStreamReaderWithoutCaching());
                     
 
                 }
            
-                if (com.chemspider.www.SpectraStub.GetAllSpectraInfo.class.equals(type)){
+                if (SpectraStub.GetAllSpectraInfo.class.equals(type)){
                 
-                           return com.chemspider.www.SpectraStub.GetAllSpectraInfo.Factory.parse(param.getXMLStreamReaderWithoutCaching());
+                           return SpectraStub.GetAllSpectraInfo.Factory.parse(param.getXMLStreamReaderWithoutCaching());
                     
 
                 }
            
-                if (com.chemspider.www.SpectraStub.GetAllSpectraInfoResponse.class.equals(type)){
+                if (SpectraStub.GetAllSpectraInfoResponse.class.equals(type)){
                 
-                           return com.chemspider.www.SpectraStub.GetAllSpectraInfoResponse.Factory.parse(param.getXMLStreamReaderWithoutCaching());
+                           return SpectraStub.GetAllSpectraInfoResponse.Factory.parse(param.getXMLStreamReaderWithoutCaching());
                     
 
                 }
            
-                if (com.chemspider.www.SpectraStub.GetCompoundSpectraInfo.class.equals(type)){
+                if (SpectraStub.GetCompoundSpectraInfo.class.equals(type)){
                 
-                           return com.chemspider.www.SpectraStub.GetCompoundSpectraInfo.Factory.parse(param.getXMLStreamReaderWithoutCaching());
+                           return SpectraStub.GetCompoundSpectraInfo.Factory.parse(param.getXMLStreamReaderWithoutCaching());
                     
 
                 }
            
-                if (com.chemspider.www.SpectraStub.GetCompoundSpectraInfoResponse.class.equals(type)){
+                if (SpectraStub.GetCompoundSpectraInfoResponse.class.equals(type)){
                 
-                           return com.chemspider.www.SpectraStub.GetCompoundSpectraInfoResponse.Factory.parse(param.getXMLStreamReaderWithoutCaching());
+                           return SpectraStub.GetCompoundSpectraInfoResponse.Factory.parse(param.getXMLStreamReaderWithoutCaching());
                     
 
                 }
            
-                if (com.chemspider.www.SpectraStub.GetSpectrumInfo.class.equals(type)){
+                if (SpectraStub.GetSpectrumInfo.class.equals(type)){
                 
-                           return com.chemspider.www.SpectraStub.GetSpectrumInfo.Factory.parse(param.getXMLStreamReaderWithoutCaching());
+                           return SpectraStub.GetSpectrumInfo.Factory.parse(param.getXMLStreamReaderWithoutCaching());
                     
 
                 }
            
-                if (com.chemspider.www.SpectraStub.GetSpectrumInfoResponse.class.equals(type)){
+                if (SpectraStub.GetSpectrumInfoResponse.class.equals(type)){
                 
-                           return com.chemspider.www.SpectraStub.GetSpectrumInfoResponse.Factory.parse(param.getXMLStreamReaderWithoutCaching());
+                           return SpectraStub.GetSpectrumInfoResponse.Factory.parse(param.getXMLStreamReaderWithoutCaching());
                     
 
                 }

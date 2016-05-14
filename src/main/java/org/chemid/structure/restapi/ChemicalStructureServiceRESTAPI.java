@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ChemID. (http://www.chemid.org)
+ * Copyright (c) 2016, ChemID. (http://www.chemid.org)
  *
  * ChemID licenses this file to you under the Apache License V 2.0.
  * You may not use this file except in compliance with the License.
@@ -12,6 +12,7 @@
 
 package org.chemid.structure.restapi;
 
+import org.chemid.structure.common.Constants;
 import org.chemid.structure.common.MoleculeMassMapper;
 import org.chemid.structure.dbclient.chemspider.ChemSpiderClient;
 import org.chemid.structure.common.Constants;
@@ -22,8 +23,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 
 /**
@@ -72,16 +71,8 @@ public class ChemicalStructureServiceRESTAPI {
 
         } else if (database.toLowerCase().contains("chemspider")) {
             ChemSpiderClient client = ChemSpiderClient.getInstance(Constants.ChemSpiderConstants.TOKEN, true);
-            client.getChemspiderByMass(mass, error);
-            File file = new File("structures.sdf");
-            FileInputStream stream = new FileInputStream(file);
-            StringBuilder stringBuilder = new StringBuilder("");
-            int ch;
-            while ((ch = stream.read()) != -1) {
-                stringBuilder.append((char) ch);
-            }
-            stream.close();
-            return stringBuilder.toString();
+            return client.getChemicalStructuresByMass(mass, error);
+
         } else {
             return "ERROR: Something is Wrong. Please check the values.";
         }

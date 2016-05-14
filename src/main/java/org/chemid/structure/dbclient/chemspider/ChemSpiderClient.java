@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ChemID. (http://www.chemid.org)
+ * Copyright (c) 2016, ChemID. (http://www.chemid.org)
  *
  * ChemID licenses this file to you under the Apache License V 2.0.
  * You may not use this file except in compliance with the License.
@@ -11,28 +11,26 @@
  */
 package org.chemid.structure.dbclient.chemspider;
 
-import com.chemspider.www.MassSpecAPIStub;
-import com.chemspider.www.MassSpecAPIStub.*;
-import com.chemspider.www.SearchStub;
-import com.chemspider.www.SearchStub.AsyncSimpleSearch;
-import com.chemspider.www.SearchStub.GetAsyncSearchResultResponse;
-import com.chemspider.www.SearchStub.GetAsyncSearchStatusResponse;
-
 import org.apache.axis2.AxisFault;
 import org.apache.axis2.transaction.TransactionConfiguration;
 import org.apache.axis2.transport.http.HTTPConstants;
 import org.chemid.structure.common.Constants;
+import org.chemid.structure.dbclient.chemspider.generated.MassSpecAPIStub;
+import org.chemid.structure.dbclient.chemspider.generated.MassSpecAPIStub.*;
+import org.chemid.structure.dbclient.chemspider.generated.SearchStub;
+import org.chemid.structure.dbclient.chemspider.generated.SearchStub.AsyncSimpleSearch;
+import org.chemid.structure.dbclient.chemspider.generated.SearchStub.GetAsyncSearchResultResponse;
+import org.chemid.structure.dbclient.chemspider.generated.SearchStub.GetAsyncSearchStatusResponse;
 import org.openscience.cdk.ChemFile;
 import org.openscience.cdk.ChemObject;
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.interfaces.IAtomContainer;
-import org.openscience.cdk.interfaces.IChemObject;
 import org.openscience.cdk.io.MDLV2000Reader;
-import org.openscience.cdk.io.SDFWriter;
 import org.openscience.cdk.tools.manipulator.ChemFileManipulator;
 
-import java.io.FileOutputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.lang.String;
 import java.rmi.RemoteException;
@@ -42,20 +40,19 @@ import java.util.zip.GZIPInputStream;
 
 public class ChemSpiderClient {
 
+    private static ChemSpiderClient client;
     protected String token = Constants.ChemSpiderConstants.TOKEN;
     protected IAtomContainer[] candidates = null;
     protected boolean verbose;
     private Integer CONNECTION_TIMEOUT = Constants.ChemSpiderConstants.CONNECTION_TIMEOUT;
     private Integer SO_TIME_OUT = Constants.ChemSpiderConstants.SO_TIME_OUT;
-    private static ChemSpiderClient client;
-    private String sdfString = null;
 
     private ChemSpiderClient(String token, boolean verbose) {
         this.token = token;
         this.verbose = verbose;
     }
 
-    public static ChemSpiderClient getInstance(String token, boolean verbose){
+    public static ChemSpiderClient getInstance(String token, boolean verbose) {
         if (client == null) {
             client = new ChemSpiderClient(token, verbose);
             return client;
@@ -83,18 +80,18 @@ public class ChemSpiderClient {
         return Output;
     }
 
-    public Vector<String> getChemspiderByMass(Double mass, Double error) throws RemoteException {
-        MassSpecAPIStub stub = new MassSpecAPIStub();
-        stub._getServiceClient().getOptions().setProperty(HTTPConstants.CHUNKED, false);
-        stub._getServiceClient().getOptions().setProperty(HTTPConstants.CONNECTION_TIMEOUT, CONNECTION_TIMEOUT);
-        stub._getServiceClient().getOptions().setProperty(HTTPConstants.SO_TIMEOUT, SO_TIME_OUT);
-        stub._getServiceClient().getOptions().setCallTransportCleanup(true);
+    public String getChemicalStructuresByMass(Double mass, Double error) throws RemoteException {
+        MassSpecAPIStub massSpecAPIStub = new MassSpecAPIStub();
+        massSpecAPIStub._getServiceClient().getOptions().setProperty(HTTPConstants.CHUNKED, false);
+        massSpecAPIStub._getServiceClient().getOptions().setProperty(HTTPConstants.CONNECTION_TIMEOUT, CONNECTION_TIMEOUT);
+        massSpecAPIStub._getServiceClient().getOptions().setProperty(HTTPConstants.SO_TIMEOUT, SO_TIME_OUT);
+        massSpecAPIStub._getServiceClient().getOptions().setCallTransportCleanup(true);
 
-        SearchByMassAsync sbma = new SearchByMassAsync();
-        sbma.setMass(mass);
-        sbma.setRange(error);
-        sbma.setToken(this.token);
-        SearchByMassAsyncResponse sbmar = stub.searchByMassAsync(sbma);
+        SearchByMassAsync searchByMassAsync = new SearchByMassAsync();
+        searchByMassAsync.setMass(mass);
+        searchByMassAsync.setRange(error);
+        searchByMassAsync.setToken(this.token);
+        SearchByMassAsyncResponse massAsyncResponse = massSpecAPIStub.searchByMassAsync(searchByMassAsync);
 
         SearchStub thisSearchStub = new SearchStub();
         thisSearchStub._getServiceClient().getOptions().setProperty(HTTPConstants.CHUNKED, false);
@@ -102,39 +99,39 @@ public class ChemSpiderClient {
         thisSearchStub._getServiceClient().getOptions().setProperty(HTTPConstants.SO_TIMEOUT, SO_TIME_OUT);
         SearchStub.GetAsyncSearchResult GetAsyncSearchResultInput = new SearchStub.GetAsyncSearchResult();
 
-        GetAsyncSearchResultInput.setRid(sbmar.getSearchByMassAsyncResult());
+        GetAsyncSearchResultInput.setRid(massAsyncResponse.getSearchByMassAsyncResult());
         GetAsyncSearchResultInput.setToken(token);
         GetAsyncSearchResultResponse thisGetAsyncSearchResultResponse =
                 thisSearchStub.getAsyncSearchResult(GetAsyncSearchResultInput);
         int[] Output = thisGetAsyncSearchResultResponse.getGetAsyncSearchResultResult().get_int();
 
-        Vector<String> csids = getChemSpiderByCsids(Output);
+        String sdf = getChemicalStructuresByCsids(Output);
         thisSearchStub.cleanup();
-        stub._getServiceClient().cleanupTransport();
-        stub.cleanup();
-        return csids;
+        massSpecAPIStub._getServiceClient().cleanupTransport();
+        massSpecAPIStub.cleanup();
+        return sdf;
     }
 
-    public Vector<String> getChemSpiderByCsids(int[] _csids) throws RemoteException {
+    public String getChemicalStructuresByCsids(int[] _csids) throws RemoteException {
         Vector<Integer> uniqueCsidArray = new Vector<Integer>();
-        for (int i = 0; i < _csids.length; i++) {
-            if (!uniqueCsidArray.contains(_csids[i]))
-                uniqueCsidArray.add(_csids[i]);
+        for (int _csid : _csids) {
+            if (!uniqueCsidArray.contains(_csid))
+                uniqueCsidArray.add(_csid);
         }
-
-        MassSpecAPIStub stub = new MassSpecAPIStub();
-        stub._getServiceClient().getOptions().setProperty(HTTPConstants.CHUNKED, false);
-        stub._getServiceClient().getOptions().setProperty(HTTPConstants.CONNECTION_TIMEOUT, CONNECTION_TIMEOUT);
-        stub._getServiceClient().getOptions().setProperty(HTTPConstants.SO_TIMEOUT, SO_TIME_OUT);
+        String sdf = "";
+        MassSpecAPIStub massSpecAPIStub = new MassSpecAPIStub();
+        massSpecAPIStub._getServiceClient().getOptions().setProperty(HTTPConstants.CHUNKED, false);
+        massSpecAPIStub._getServiceClient().getOptions().setProperty(HTTPConstants.CONNECTION_TIMEOUT, CONNECTION_TIMEOUT);
+        massSpecAPIStub._getServiceClient().getOptions().setProperty(HTTPConstants.SO_TIMEOUT, SO_TIME_OUT);
         Vector<String> csids = new Vector<String>();
 
         if (this.verbose) System.out.println("Downloading compounds from ChemSpider");
         if (uniqueCsidArray.size() == 1) {
             this.candidates = new IAtomContainer[1];
-            GetRecordMol getRecorMol = new GetRecordMol();
-            getRecorMol.setCsid(String.valueOf(uniqueCsidArray.get(0)));
-            getRecorMol.setToken(this.token);
-            GetRecordMolResponse grmr = stub.getRecordMol(getRecorMol);
+            GetRecordMol getRecordMol = new GetRecordMol();
+            getRecordMol.setCsid(String.valueOf(uniqueCsidArray.get(0)));
+            getRecordMol.setToken(this.token);
+            GetRecordMolResponse grmr = massSpecAPIStub.getRecordMol(getRecordMol);
             try {
                 Vector<IAtomContainer> cons = this.getAtomContainerFromString(grmr.getGetRecordMolResult());
                 csids.add(String.valueOf(0));
@@ -144,27 +141,28 @@ public class ChemSpiderClient {
                 e.printStackTrace();
             }
         } else {
-            AsyncSimpleSearch ass = new AsyncSimpleSearch();
+            AsyncSimpleSearch asyncSimpleSearch = new AsyncSimpleSearch();
             String query = "";
             if (uniqueCsidArray.size() != 0) query += uniqueCsidArray.get(0);
             for (int i = 1; i < uniqueCsidArray.size(); i++)
                 query += "," + uniqueCsidArray.get(i);
-            ass.setQuery(query);
-            ass.setToken(this.token);
+            asyncSimpleSearch.setQuery(query);
+            asyncSimpleSearch.setToken(this.token);
             SearchStub thisSearchStub = new SearchStub();
             thisSearchStub._getServiceClient().getOptions().setProperty(HTTPConstants.CHUNKED, false);
             thisSearchStub._getServiceClient().getOptions().
                     setProperty(HTTPConstants.CONNECTION_TIMEOUT, CONNECTION_TIMEOUT);
             thisSearchStub._getServiceClient().getOptions().setProperty(HTTPConstants.SO_TIMEOUT, SO_TIME_OUT);
 
-            csids = this.downloadCompressedSDF(thisSearchStub.asyncSimpleSearch(ass).getAsyncSimpleSearchResult(), stub);
+            sdf = this.downloadCompressedSDF(
+                    thisSearchStub.asyncSimpleSearch(asyncSimpleSearch).getAsyncSimpleSearchResult(), massSpecAPIStub);
         }
-        stub._getServiceClient().cleanupTransport();
-        stub.cleanup();
-        return csids;
+        massSpecAPIStub._getServiceClient().cleanupTransport();
+        massSpecAPIStub.cleanup();
+        return sdf;
     }
 
-    protected Vector<String> downloadCompressedSDF(String rid, MassSpecAPIStub stub) {
+    protected String downloadCompressedSDF(String rid, MassSpecAPIStub stub) {
         TransactionConfiguration tc = new TransactionConfiguration();
         tc.setTransactionTimeout(Integer.MAX_VALUE);
         stub._getServiceClient().getAxisConfiguration().setTransactionConfig(tc);
@@ -197,33 +195,25 @@ public class ChemSpiderClient {
             System.err.println("Problem retrieving ChemSpider webservices");
         }
 
-        Vector<String> csids = new Vector<String>();
-        GZIPInputStream gin = null;
+        GZIPInputStream gin;
+        StringBuilder stringBuilder = new StringBuilder();
         if (dh != null) {
             try {
                 gin = new GZIPInputStream(dh.getInputStream());
-                SDFWriter wr = new SDFWriter(new FileOutputStream("structures.sdf"));
-                MDLV2000Reader reader1 = new MDLV2000Reader(gin);
-                ChemFile files = reader1.read(new ChemFile());
-                List<IAtomContainer> objs = ChemFileManipulator.getAllAtomContainers(files);
-                for (IChemObject o : objs) {
-                    sdfString = sdfString + o.toString();
-                    wr.write(o);
+                InputStreamReader reader = new InputStreamReader(gin);
+                BufferedReader in = new BufferedReader(reader);
+
+                String read;
+                while ((read = in.readLine()) != null) {
+                    stringBuilder.append(read).append("\n");
                 }
-                wr.close();
+                in.close();
+
             } catch (IOException e) {
-                e.printStackTrace();
-            } catch (CDKException e) {
                 e.printStackTrace();
             }
         }
-        return csids;
-    }
-
-    public synchronized IAtomContainer getMol(String id)
-            throws RemoteException, CDKException {
-        int intID = Integer.parseInt(id);
-        return this.candidates[intID];
+        return stringBuilder.toString();
     }
 
     protected Vector<IAtomContainer> getAtomContainerFromString(String sdfString) throws CDKException {
@@ -245,16 +235,4 @@ public class ChemSpiderClient {
         return ret;
     }
 
-    public String getChemSpiderToken() {
-        return this.token;
-    }
-
-    public String getCandidateID(String index) {
-        int intIndex = Integer.parseInt(index);
-        return (String) this.candidates[intIndex].getProperty("CSID");
-    }
-
-    public String getSdfString() {
-        return sdfString;
-    }
 }

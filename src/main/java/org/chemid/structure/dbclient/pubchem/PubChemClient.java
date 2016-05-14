@@ -28,12 +28,6 @@ public class PubChemClient {
     private pubChemESearch pubChemESearch;
     private RestClient restClient;
 
-    public static void main(String[] args) {
-
-        PubChemClient test = new PubChemClient();
-        System.out.println(test.getDownloadURL());
-    }
-
     public pubChemESearch getPubChemESearchRequestParameters() {
 
         try {

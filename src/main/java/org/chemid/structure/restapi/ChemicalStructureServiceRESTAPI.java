@@ -65,16 +65,8 @@ public class ChemicalStructureServiceRESTAPI {
 //            return String.valueOf(mass);
         } else if (database.toLowerCase().contains("chemspider")) {
             ChemSpiderClient client = ChemSpiderClient.getInstance(Constants.ChemSpiderConstants.TOKEN, true);
-            client.getChemspiderByMass(mass, error);
-            File file = new File("structures.sdf");
-            FileInputStream stream = new FileInputStream(file);
-            StringBuilder stringBuilder = new StringBuilder("");
-            int ch;
-            while ((ch = stream.read()) != -1) {
-                stringBuilder.append((char) ch);
-            }
-            stream.close();
-            return stringBuilder.toString();
+            return client.getChemicalStructuresByMass(mass, error);
+
         } else {
             return "ERROR: Something is Wrong. Please check the values.";
         }

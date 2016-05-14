@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ChemID. (http://www.chemid.org)
+ * Copyright (c) 2016, ChemID. (http://www.chemid.org)
  *
  * ChemID licenses this file to you under the Apache License V 2.0.
  * You may not use this file except in compliance with the License.

@@ -23,16 +23,23 @@ import org.chemid.structure.common.XmlParser;
 import org.glassfish.jersey.client.ClientConfig;
 import org.w3c.dom.Document;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.zip.GZIPInputStream;
+
 public class PubChemClient {
 
     private pubChemESearch pubChemESearch;
     private RestClient restClient;
 
-    public pubChemESearch getPubChemESearchRequestParameters() {
+    public pubChemESearch getPubChemESearchRequestParameters(String massRange) {
 
         try {
             this.restClient = new RestClient();
-            Invocation.Builder invocationBuilder = restClient.getWebResource(Constants.PubChemClient.ESEARCH_URL).
+            Invocation.Builder invocationBuilder = restClient.getWebResource(Constants.PubChemClient.ESEARCH_URL + massRange).
                     request(MediaType.APPLICATION_XML);
             Response response = invocationBuilder.get();
             String resp = response.readEntity(String.class);
@@ -51,17 +58,16 @@ public class PubChemClient {
         return null;
     }
 
-    public String getDownloadURL() {
+    public String getDownloadURL(String massRange) {
 
         try {
-            pubChemESearch = getPubChemESearchRequestParameters();
+            pubChemESearch = getPubChemESearchRequestParameters(massRange);
             Document xmlPayload = XmlParser.getXMLPayload(Constants.PubChemClient.PUBCHEM_DOWNLOAD_PAYLOAD_FILENAME,
                     Constants.PubChemClient.PUBCHEM_RESOURCES);
             xmlPayload.getElementsByTagName(Constants.PubChemClient.PUBCHEM_PAYLOAD_QueryKey_NAME).
                     item(Constants.PubChemClient.ITEM_NUMBER).setTextContent(pubChemESearch.getQueryKey());
             xmlPayload.getElementsByTagName(Constants.PubChemClient.PUBCHEM_PAYLOAD_WebEnv_NAME).
                     item(Constants.PubChemClient.ITEM_NUMBER).setTextContent(pubChemESearch.getWebEnv());
-
             return pubQuery(XmlParser.getStringFromDocument(xmlPayload));
 
         } catch (Exception e) {
@@ -117,6 +123,30 @@ public class PubChemClient {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
+    }
+
+    public StringBuilder getSDFBuffer(String Url) {
+
+        URL url= null;
+        try {
+            url = new URL(Url);
+            GZIPInputStream gzis = new GZIPInputStream(url.openStream());
+            InputStreamReader reader = new InputStreamReader(gzis);
+            BufferedReader in = new BufferedReader(reader);
+            StringBuilder stringBuffer = new StringBuilder("");
+            String readed;
+            while ((readed = in.readLine()) != null) {
+                stringBuffer.append(readed);
+                stringBuffer.append("\n");
+            }
+            return stringBuffer;
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         return null;
     }
 }

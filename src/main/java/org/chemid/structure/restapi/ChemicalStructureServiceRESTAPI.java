@@ -15,6 +15,7 @@ package org.chemid.structure.restapi;
 import org.chemid.structure.common.MoleculeMassMapper;
 import org.chemid.structure.dbclient.chemspider.ChemSpiderClient;
 import org.chemid.structure.common.Constants;
+import org.chemid.structure.dbclient.pubchem.PubChemClient;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -52,7 +53,7 @@ public class ChemicalStructureServiceRESTAPI {
                            @PathParam("error") Double error,
                            @PathParam("ppm") String ppm,
                            @PathParam("format") String format) throws IOException {
-
+        ChemicalCalculator chemicalCalculator = new ChemicalCalculator();
         if (charge.toLowerCase().equals("p")) {
             mass = mass - MoleculeMassMapper.getInstance().getProperty("P." + adduct);
         } else if (charge.toLowerCase().equals("n")) {
@@ -62,7 +63,13 @@ public class ChemicalStructureServiceRESTAPI {
         }
 
         if (database.toLowerCase().contains("pubchem")) {
-//            return String.valueOf(mass);
+            System.out.println("PubChem Database");
+            String massRange = chemicalCalculator.getMassRange(mass,0.01);
+            PubChemClient pubChemClient = new PubChemClient();
+            String Url = pubChemClient.getDownloadURL(massRange);
+            StringBuilder stringBuilder = pubChemClient.getSDFBuffer(Url);
+            return stringBuilder.toString();
+
         } else if (database.toLowerCase().contains("chemspider")) {
             ChemSpiderClient client = ChemSpiderClient.getInstance(Constants.ChemSpiderConstants.TOKEN, true);
             client.getChemspiderByMass(mass, error);
@@ -79,6 +86,5 @@ public class ChemicalStructureServiceRESTAPI {
             return "ERROR: Something is Wrong. Please check the values.";
         }
 
-        return "ERROR: Something is Wrong. Please check the values.";
     }
 }

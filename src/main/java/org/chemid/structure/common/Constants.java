@@ -23,7 +23,7 @@ public class Constants {
     public static final class PubChemClient {
 
         public static final String REQUEST_URL = "http://pubchem.ncbi.nlm.nih.gov/pug/pug.cgi";
-        public static final String ESEARCH_URL = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pccompound&usehistory=y&retmax=0&term=100:100.01[exactmass]";
+        public static final String ESEARCH_URL = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pccompound&usehistory=y&retmax=0&term=";
         public static final int ITEM_NUMBER = 0;
         public static final String PUBCHEM_RESOURCES = "dbclient/pubchem/";
         public static final String PUBCHEM_DOWNLOAD_PAYLOAD_FILENAME = "download.xml";

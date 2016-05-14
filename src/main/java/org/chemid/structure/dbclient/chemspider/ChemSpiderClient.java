@@ -11,12 +11,12 @@
  */
 package org.chemid.structure.dbclient.chemspider;
 
-import com.chemspider.www.MassSpecAPIStub;
-import com.chemspider.www.MassSpecAPIStub.*;
-import com.chemspider.www.SearchStub;
-import com.chemspider.www.SearchStub.AsyncSimpleSearch;
-import com.chemspider.www.SearchStub.GetAsyncSearchResultResponse;
-import com.chemspider.www.SearchStub.GetAsyncSearchStatusResponse;
+import org.chemid.structure.dbclient.chemspider.generated.MassSpecAPIStub;
+import org.chemid.structure.dbclient.chemspider.generated.MassSpecAPIStub.*;
+import org.chemid.structure.dbclient.chemspider.generated.SearchStub;
+import org.chemid.structure.dbclient.chemspider.generated.SearchStub.AsyncSimpleSearch;
+import org.chemid.structure.dbclient.chemspider.generated.SearchStub.GetAsyncSearchResultResponse;
+import org.chemid.structure.dbclient.chemspider.generated.SearchStub.GetAsyncSearchStatusResponse;
 
 import org.apache.axis2.AxisFault;
 import org.apache.axis2.transaction.TransactionConfiguration;

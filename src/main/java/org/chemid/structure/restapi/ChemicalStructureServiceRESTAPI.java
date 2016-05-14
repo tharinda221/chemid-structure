@@ -62,7 +62,6 @@ public class ChemicalStructureServiceRESTAPI {
         }
 
         if (database.toLowerCase().contains("pubchem")) {
-            System.out.println("PubChem Database");
             String massRange = chemicalCalculator.getMassRange(mass,0.01);
             PubChemClient pubChemClient = new PubChemClient();
             String Url = pubChemClient.getDownloadURL(massRange);

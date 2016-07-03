@@ -30,11 +30,21 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.zip.GZIPInputStream;
 
+
+/**
+ * This class includes methods to fetch data from pubChem database.
+ */
 public class PubChemClient {
 
     private pubChemESearch pubChemESearch;
     private RestClient restClient;
 
+    /**
+     * This method is to get WebEnv and QueryKey for given mass range from pubChem database.
+     *
+     * @param massRange mass range to fetch data
+     * @throws Exception
+     */
     public pubChemESearch getPubChemESearchRequestParameters(String massRange) {
 
         try {
@@ -58,6 +68,12 @@ public class PubChemClient {
         return null;
     }
 
+    /**
+     * This method is to get the CDF file URL from pubChem database.
+     *
+     * @param massRange mass range to fetch data
+     * @throws Exception
+     */
     public String getDownloadURL(String massRange) {
 
         try {
@@ -76,6 +92,12 @@ public class PubChemClient {
         return null;
     }
 
+    /**
+     * This method is to send a request to pubChem database periodically in order to get CDF file URL.
+     *
+     * @param xmlPayload XML payload of the request
+     * @throws Exception
+     */
     public String pubQuery(String xmlPayload) {
 
         try {
@@ -91,6 +113,7 @@ public class PubChemClient {
                     resp = checkQuery(XmlParser.StringToXML(resp).getElementsByTagName(Constants.PubChemClient.
                             CHECK_QUERY_WAITING_REQUEST_ID_TAG_NAME).item(Constants.PubChemClient.ITEM_NUMBER).
                             getFirstChild().getNodeValue());
+                    System.out.println(resp);
                 }
             }
 
@@ -103,6 +126,12 @@ public class PubChemClient {
         return null;
     }
 
+    /**
+     * This method is to check whether the URL is fetch or not while send request to the pubChem database.
+     *
+     * @param requestID request Id which is given from the pubChem database
+     * @throws Exception
+     */
     public String checkQuery(String requestID) {
 
         try {
@@ -126,6 +155,12 @@ public class PubChemClient {
         return null;
     }
 
+    /**
+     * This method is to get CDF file from the URL as a StringBuilder .
+     *
+     * @param Url CDF file URL which is get from pubChem database
+     * @throws Exception
+     */
     public StringBuilder getSDFBuffer(String Url) {
 
         URL url= null;

@@ -42,6 +42,17 @@ public class ChemicalStructureServiceRESTAPI {
         return "Chemical Structure Service V 1.0";
     }
 
+    /**
+     * This method returns chemical structures as a plain text for given parameters.
+     * @param database database type. ex- pubChem, ChemSpider
+     * @param charge
+     * @param adduct adduct type
+     * @param mass value of mass
+     * @param error value of error
+     * @param ppm error type. ex- ppm, ppb, etc
+     * @param format chemical structure format. ex - SDF, etc
+     * @return chemical structures
+     */
     @GET
     @Path("{database}/{charge}/{adduct}/{mass}/{error}/{ppm}/{format}")
     @Produces(MediaType.TEXT_PLAIN)

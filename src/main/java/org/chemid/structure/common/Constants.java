@@ -11,8 +11,14 @@
  */
 package org.chemid.structure.common;
 
+/**
+ * This class includes All the constants.
+ */
 public class Constants {
 
+    /**
+     * This class includes constants related to ChemSpider.
+     */
     public static class ChemSpiderConstants {
         public static String TOKEN = "327be9cb-76c5-48cf-97df-9da48db88e85";
         public static Integer CONNECTION_TIMEOUT = 180000;
@@ -20,6 +26,9 @@ public class Constants {
         public static Integer THREAD_TIME_OUT = 1000;
     }
 
+    /**
+     * This class includes constants related to PubChem.
+     */
     public static final class PubChemClient {
 
         public static final String REQUEST_URL = "http://pubchem.ncbi.nlm.nih.gov/pug/pug.cgi";

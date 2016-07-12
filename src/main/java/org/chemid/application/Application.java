@@ -44,8 +44,10 @@ public class Application {
         ServletHolder jerseyServlet = context.addServlet(org.glassfish.jersey.servlet.ServletContainer.class, "/*");
         jerseyServlet.setInitOrder(RESTAPIConstants.INIT_ORDER);
         // Tells the Jersey Servlet which REST service/class to load.
+//        jerseyServlet.setInitParameter("jersey.config.server.provider.classnames",
+//                MolecularDescriptorServiceRESTAPI.class.getCanonicalName());
         jerseyServlet.setInitParameter("jersey.config.server.provider.classnames",
-                MolecularDescriptorServiceRESTAPI.class.getCanonicalName());
+                MolecularDescriptorServiceRESTAPI.class.getCanonicalName() + ";org.glassfish.jersey.media.multipart.MultiPartFeature");
 //        jerseyServlet.setInitParameter("jersey.config.server.provider.classnames",
 //                MolecularDescriptorServiceRESTAPI.class.getCanonicalName());
         try {

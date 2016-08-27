@@ -9,8 +9,21 @@
  * CONDITIONS OF ANY KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations under the License.
  */
+package org.chemid.descriptor.restapi;
 
-package org.chemid.structure.dbclient.hmdb;
+/**
+ * A class to hold constants
+ */
+public class RESTAPIConstants {
 
-public class HMDBClient {
+    static final int PORT_NO = 8080;
+    static final int INIT_ORDER = 0;
+
+    /**
+     * A private constructor to hide implicit public constructor
+     */
+    private RESTAPIConstants() {
+        //
+    }
+
 }

@@ -1,6 +1,19 @@
-package org.chemid.molecularDescriptor.common;
+/*
+ * Copyright (c) 2016, ChemID. (http://www.chemid.org)
+ *
+ * ChemID licenses this file to you under the Apache License V 2.0.
+ * You may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+ * Unless required by applicable law or agreed to in writing, software distributed under the
+ * License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+ * CONDITIONS OF ANY KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations under the License.
+ */
+package org.chemid.descriptor;
 
-
+import com.google.gson.Gson;
+import org.chemid.descriptor.restapi.DescriptorContainer;
+import org.chemid.descriptor.restapi.Descriptors;
 import org.openscience.cdk.ChemFile;
 import org.openscience.cdk.aromaticity.CDKHueckelAromaticityDetector;
 import org.openscience.cdk.interfaces.IAtomContainer;
@@ -13,14 +26,25 @@ import org.openscience.cdk.qsar.DescriptorEngine;
 import org.openscience.cdk.qsar.IDescriptor;
 import org.openscience.cdk.qsar.IMolecularDescriptor;
 import org.openscience.cdk.qsar.descriptors.molecular.IPMolecularLearningDescriptor;
-import org.openscience.cdk.qsar.result.*;
+import org.openscience.cdk.qsar.result.DoubleArrayResult;
+import org.openscience.cdk.qsar.result.DoubleArrayResultType;
+import org.openscience.cdk.qsar.result.DoubleResult;
+import org.openscience.cdk.qsar.result.IDescriptorResult;
+import org.openscience.cdk.qsar.result.IntegerArrayResult;
+import org.openscience.cdk.qsar.result.IntegerArrayResultType;
+import org.openscience.cdk.qsar.result.IntegerResult;
 import org.openscience.cdk.smiles.SmilesGenerator;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 import org.openscience.cdk.tools.manipulator.ChemFileManipulator;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Vector;
 
 /**
  * This class includes molecular descriptor methods implemented using CDK.
@@ -35,7 +59,7 @@ public class MolecularDescriptorService {
      * @param inputStream received chemical structure file
      * @return Vector<IMolecule> The molecules
      */
-    public List<IMolecule> readMolecules(InputStream inputStream) {
+    public List<IMolecule> readMolecules(InputStream inputStream) throws IOException {
         Vector<IMolecule> mols = new Vector<IMolecule>();
         List<IAtomContainer> list;
         try {
@@ -79,20 +103,34 @@ public class MolecularDescriptorService {
      * @param descNamesStr comma-separated list of descriptor names (if empty, all descriptors will be calculated)
      * @return StringBuilder comma-separated descriptor values
      */
-    public StringBuilder getDescriptorCSV(InputStream inputStream, String descNamesStr) throws java.io.IOException {
+    public StringBuilder getDescriptorCSV(InputStream inputStream, String descNamesStr) throws IOException {
 
         List<IMolecule> mols = readMolecules(inputStream);
         System.err.println("read " + mols.size() + " compounds");
         List<IDescriptor> descriptors = ENGINE.getDescriptorInstances();
         System.err.println("found " + descriptors.size() + " descriptors");
 
+        System.out.println(descriptors);
+
+        Descriptors descriptors1 = new Descriptors();
+        List<DescriptorContainer> containers = new ArrayList<DescriptorContainer>();
+
         List<String> descNames = Arrays.asList(descNamesStr.split(","));
         ArrayList<String> colNames = new ArrayList<String>();
         ArrayList<Double[]> values = new ArrayList<Double[]>();
         for (IDescriptor desc : descriptors) {
-            if (desc instanceof IPMolecularLearningDescriptor)
+
+            DescriptorContainer container = new DescriptorContainer();
+            container.setDescriptor_class(desc.getClass().getName());
+
+            if (desc instanceof IPMolecularLearningDescriptor) {
                 continue;
-            String tname = desc.getClass().getName();
+            }
+            String tname = desc.getClass().getSimpleName();
+            container.setDescriptor_names(desc.getDescriptorNames());
+
+            containers.add(container);
+
             String[] tnamebits = tname.split("\\.");
             tname = tnamebits[tnamebits.length - 1];
             if ((descNamesStr.length() > 0) && (!descNames.contains(tname)))
@@ -106,9 +144,14 @@ public class MolecularDescriptorService {
             values.addAll(valuesList);
         }
 
+        descriptors1.setContainers(containers);
+        Gson gson = new Gson();
+        System.out.println("Json :" + gson.toJson(descriptors1));
+
         int ncol = values.size();
         int nrow = mols.size();
         StringBuilder stringBuffer = new StringBuilder("");
+        stringBuffer.append("Database,ID,");
         stringBuffer.append("SMILES,");
         for (int c = 0; c < ncol; c++) {
             if (c != 0) stringBuffer.append(",");
@@ -116,11 +159,17 @@ public class MolecularDescriptorService {
         }
         stringBuffer.append("\n");
         for (int r = 0; r < nrow; r++) {
+            int count = 0;
+            stringBuffer.append(getId(mols.get(r))).append(",");
             String smi = getSmiles(mols.get(r));
-            stringBuffer.append(smi + ",");
+            stringBuffer.append(smi).append(",");
             for (int c = 0; c < ncol; c++) {
                 if (c != 0) stringBuffer.append(",");
-                stringBuffer.append("" + values.get(c)[r]);
+                if (values.get(c)[r] == null) {
+                    stringBuffer.append("NaN");
+                } else {
+                    stringBuffer.append("").append(values.get(c)[r]);
+                }
             }
             stringBuffer.append("\n");
         }
@@ -180,7 +229,7 @@ public class MolecularDescriptorService {
                         for (int j = 0; j < getSize(descriptor); j++)
                             descriptorsList.get(j)[i] = (double) ((IntegerArrayResult) res).get(j);
                     else
-                        throw new IllegalStateException("Unknown idescriptor result value for '" + descriptor + "' : "
+                        throw new IllegalStateException("Unknown descriptor result value for '" + descriptor + "' : "
                                 + res.getClass());
                 } catch (Throwable e) {
                     System.err.println("Could not compute cdk feature " + descriptor);
@@ -227,5 +276,23 @@ public class MolecularDescriptorService {
         }
         SmilesGenerator g = new SmilesGenerator();
         return g.createSMILES(molecule);
+    }
+
+    /**
+     * Returns the Chemical Structure identification number and the database name.
+     * @param molecule : Chemical structure object.
+     * @return : Database and id number (comma separated)
+     */
+    public static String getId(IMolecule molecule) {
+        Map<Object, Object> properties = molecule.getProperties();
+        String id = "";
+        for (Object o : properties.keySet()) {
+            if (o.toString().equals("PUBCHEM_COMPOUND_CID")) {
+                id = "PUBCHEM," + properties.get(o);
+            } else if (o.toString().equals("CSID")) {
+                id = "ChemSpider," + properties.get(o);
+            }
+        }
+        return id;
     }
 }

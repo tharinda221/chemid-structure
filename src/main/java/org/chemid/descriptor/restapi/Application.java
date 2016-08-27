@@ -9,14 +9,14 @@
  * CONDITIONS OF ANY KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations under the License.
  */
+package org.chemid.descriptor.restapi;
 
-package org.chemid.application;
-
-import org.chemid.molecularDescriptor.restapi.MolecularDescriptorServiceRESTAPI;
-import org.chemid.structure.restapi.ChemicalStructureServiceRESTAPI;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.glassfish.jersey.media.multipart.MultiPartFeature;
+import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.server.model.Resource;
 
 /**
  * The main method of this class deploys the chemical structure service on an embedded jetty server
@@ -27,7 +27,6 @@ public class Application {
      * A private constructor to hide implicit public constructor
      */
     private Application() {
-        //
     }
 
     /**
@@ -43,11 +42,8 @@ public class Application {
         jettyServer.setHandler(context);
         ServletHolder jerseyServlet = context.addServlet(org.glassfish.jersey.servlet.ServletContainer.class, "/*");
         jerseyServlet.setInitOrder(RESTAPIConstants.INIT_ORDER);
-        // Tells the Jersey Servlet which REST service/class to load.
         jerseyServlet.setInitParameter("jersey.config.server.provider.classnames",
-                MolecularDescriptorServiceRESTAPI.class.getCanonicalName());
-//        jerseyServlet.setInitParameter("jersey.config.server.provider.classnames",
-//                MolecularDescriptorServiceRESTAPI.class.getCanonicalName());
+                MolecularDescriptorServiceRESTAPI.class.getCanonicalName() +  ";org.glassfish.jersey.media.multipart.MultiPartFeature");
         try {
             jettyServer.start();
             jettyServer.join();

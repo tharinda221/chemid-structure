@@ -9,22 +9,29 @@
  * CONDITIONS OF ANY KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations under the License.
  */
+package org.chemid.descriptor.restapi;
 
-package org.chemid.application;
+import java.util.List;
 
-/**
- * A class to hold constants
- */
-public class RESTAPIConstants {
+public class Descriptors {
 
-    static final int PORT_NO = 8080;
-    static final int INIT_ORDER = 0;
+    private String sdf;
 
-    /**
-     * A private constructor to hide implicit public constructor
-     */
-    private RESTAPIConstants() {
-        //
+    private List<DescriptorContainer> descriptors;
+
+    public List<DescriptorContainer> getContainers() {
+        return descriptors;
     }
 
+    public void setContainers(List<DescriptorContainer> descriptors) {
+        this.descriptors = descriptors;
+    }
+
+    public String getSdf() {
+        return sdf;
+    }
+
+    public void setSdf(String sdf) {
+        this.sdf = sdf;
+    }
 }

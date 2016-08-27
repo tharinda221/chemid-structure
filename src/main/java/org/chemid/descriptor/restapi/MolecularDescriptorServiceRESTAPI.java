@@ -9,10 +9,9 @@
  * CONDITIONS OF ANY KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations under the License.
  */
+package org.chemid.descriptor.restapi;
 
-package org.chemid.molecularDescriptor.restapi;
-
-import org.chemid.molecularDescriptor.common.MolecularDescriptorService;
+import org.chemid.descriptor.MolecularDescriptorService;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
@@ -24,7 +23,7 @@ import java.io.InputStream;
 /**
  * This class includes RESTful API methods for molecular descriptor service.
  */
-@Path("/rest/molecular")
+@Path("/rest/descriptor")
 public class MolecularDescriptorServiceRESTAPI {
     /**
      * This method returns the version number of the molecular descriptor service.

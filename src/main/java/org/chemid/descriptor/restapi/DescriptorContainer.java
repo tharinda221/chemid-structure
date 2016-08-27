@@ -9,22 +9,26 @@
  * CONDITIONS OF ANY KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations under the License.
  */
+package org.chemid.descriptor.restapi;
 
-package org.chemid.structure.common;
+public class DescriptorContainer {
+    private String descriptor_class;
+    private String[] descriptor_names;
 
-
-import org.glassfish.jersey.client.ClientConfig;
-
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
-
-public class RestClient {
-
-    public WebTarget getWebResource(String Url) {
-
-        ClientConfig config = new ClientConfig();
-        Client client = ClientBuilder.newClient(config);
-        return client.target(Url);
+    public String getDescriptor_class() {
+        return descriptor_class;
     }
+
+    public void setDescriptor_class(String decsriptor_class) {
+        this.descriptor_class = decsriptor_class;
+    }
+
+    public String[] getDescriptor_names() {
+        return descriptor_names;
+    }
+
+    public void setDescriptor_names(String[] descriptor_names) {
+        this.descriptor_names = descriptor_names;
+    }
+
 }
